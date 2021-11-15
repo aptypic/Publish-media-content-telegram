@@ -18,9 +18,7 @@ def fetch_spacex_last_launch():
 
 
 def write_files(links_of_images, image_name):
-    print(links_of_images)
     for image_number, image_value in enumerate(links_of_images):
-        print(get_file_ext(image_value))
         with open(f"images/{image_name}{image_number}{get_file_ext(image_value)}", "wb") as file:
             file.write(requests.get(image_value).content)
 
