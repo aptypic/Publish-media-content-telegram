@@ -10,8 +10,8 @@ from urllib.parse import urlsplit
 
 def publish_telegram():
     bot = telegram.Bot(token=os.getenv("TELEGRAM_BOT"))
-    print(bot.send_message(text='Hello everyone', chat_id='@Arturs_channel'))
-
+    bot.send_message(text='Hello everyone', chat_id=os.getenv("GROUP_ID"))
+    bot.send_document(chat_id='@Arturs_channel', document='https://images2.alphacoders.com/611/thumb-1920-611981.jpg')
 
 def create_image_folder():
     Path("./images/").mkdir(parents=True, exist_ok=True)
