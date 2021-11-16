@@ -2,8 +2,15 @@ import os
 import requests
 import datetime
 from pathlib import Path
+
+import telegram
 from dotenv import load_dotenv
 from urllib.parse import urlsplit
+
+
+def publish_telegram():
+    bot = telegram.Bot(token=os.getenv("TELEGRAM_BOT"))
+    print(bot.send_message(text='Hello everyone', chat_id='@Arturs_channel'))
 
 
 def create_image_folder():
@@ -59,11 +66,12 @@ def get_file_ext(ext_link):
 
 def main():
     load_dotenv()
-    create_image_folder()
-    nasa_api = os.getenv("NASA_API")
-    fetch_nasa_apod(nasa_api)
-    fetch_spacex_last_launch()
-    fetch_nasa_epic(nasa_api)
+    publish_telegram()
+    # create_image_folder()
+    # nasa_api = os.getenv("NASA_API")
+    # fetch_nasa_apod(nasa_api)
+    # fetch_spacex_last_launch()
+    # fetch_nasa_epic(nasa_api)
 
 
 if __name__ == "__main__":
