@@ -3,9 +3,11 @@ This project will download photos from NASA APOD, NASA EPIC, SpaceX and will sav
 
 ## Requirements  
 python==3.10.0  
-python-dotenv==0.19.1  
+python-dotenv==0.19.2  
+python_telegram_bot==13.8.1  
 requests==2.26.0  
-urllib3==1.26.6
+telegram==0.0.1  
+
 
 
 ## How to install  
@@ -43,3 +45,5 @@ drwxr-xr-x  10 asivolap  staff      320 Nov 15 19:19 ..
 -rw-r--r--   1 asivolap  staff  2267684 Nov 15 19:19 spacex4.jpg
 -rw-r--r--   1 asivolap  staff  2007854 Nov 15 19:19 spacex5.jpg
 ```
+
+![Telegram_image](https://ibb.co/yS7G0FD)
