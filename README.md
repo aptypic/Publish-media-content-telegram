@@ -1,5 +1,5 @@
 ## The NASA API  
-This project will download photos from NASA APOD,NASA EPIC, SpaceX and will save on local folder.
+This project will download photos from NASA APOD, NASA EPIC, SpaceX and will save on local folder. After that, photos are published on telegram channel.
 
 ## Requirements  
 python==3.10.0  
