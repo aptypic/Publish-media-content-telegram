@@ -1,17 +1,19 @@
 import os
+import time
+
 import requests
 import datetime
 from pathlib import Path
-
 import telegram
 from dotenv import load_dotenv
 from urllib.parse import urlsplit
 
 
-def publish_telegram():
+def publish_telegram(file_name):
     bot = telegram.Bot(token=os.getenv("TELEGRAM_BOT"))
-    bot.send_message(text='Hello everyone', chat_id=os.getenv("GROUP_ID"))
-    bot.send_document(chat_id='@Arturs_channel', document='https://images2.alphacoders.com/611/thumb-1920-611981.jpg')
+    time.sleep(int(os.getenv("LATENCY_SECONDS", default=86400)))
+    bot.send_document(chat_id=os.getenv("GROUP_ID"), document=open(f"{file_name}", "rb"))
+
 
 def create_image_folder():
     Path("./images/").mkdir(parents=True, exist_ok=True)
@@ -28,6 +30,7 @@ def write_files(links_of_images, image_name):
     for image_number, image_value in enumerate(links_of_images):
         with open(f"images/{image_name}{image_number}{get_file_ext(image_value)}", "wb") as file:
             file.write(requests.get(image_value).content)
+            publish_telegram(f"images/{image_name}{image_number}{get_file_ext(image_value)}")
 
 
 def fetch_nasa_apod(nasa_api):
@@ -65,13 +68,13 @@ def get_file_ext(ext_link):
 
 
 def main():
-    load_dotenv()
-    publish_telegram()
-    # create_image_folder()
-    # nasa_api = os.getenv("NASA_API")
-    # fetch_nasa_apod(nasa_api)
-    # fetch_spacex_last_launch()
-    # fetch_nasa_epic(nasa_api)
+    while True:
+        load_dotenv()
+        create_image_folder()
+        nasa_api = os.getenv("NASA_API")
+        fetch_nasa_apod(nasa_api)
+        fetch_spacex_last_launch()
+        fetch_nasa_epic(nasa_api)
 
 
 if __name__ == "__main__":
