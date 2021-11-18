@@ -1,18 +1,17 @@
 import os
 import time
-
 import requests
 import datetime
 from pathlib import Path
-import telegram
 from dotenv import load_dotenv
 from urllib.parse import urlsplit
+import telegram
 
 
 def publish_telegram(file_name):
     bot = telegram.Bot(token=os.getenv("TELEGRAM_BOT"))
     time.sleep(int(os.getenv("LATENCY_SECONDS", default=86400)))
-    bot.send_document(chat_id=os.getenv("GROUP_ID"), document=open(f"{file_name}", "rb"))
+    bot.send_photo(chat_id=os.getenv("GROUP_ID"), photo=open(f"{file_name}", "rb"))
 
 
 def create_image_folder():

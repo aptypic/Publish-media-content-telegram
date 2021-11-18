@@ -2,11 +2,9 @@
 This project will download photos from NASA APOD, NASA EPIC, SpaceX and will save on local folder. After that, photos are published on telegram channel.
 
 ## Requirements  
-python==3.10.0  
 python-dotenv==0.19.2  
 python_telegram_bot==13.8.1  
 requests==2.26.0  
-telegram==0.0.1  
 
 
 
