@@ -9,9 +9,13 @@ import telegram
 
 
 def publish_telegram(file_name):
-    bot = telegram.Bot(token=os.getenv("TELEGRAM_BOT"))
-    time.sleep(int(os.getenv("LATENCY_SECONDS", default=86400)))
-    bot.send_photo(chat_id=os.getenv("GROUP_ID"), photo=open(f"{file_name}", "rb"))
+    bot = telegram.Bot(token=get_env_values("TELEGRAM_BOT"))
+    time.sleep(int(get_env_values("LATENCY_SECONDS")))
+    bot.send_photo(chat_id=get_env_values("GROUP_ID"), photo=open(f"{file_name}", "rb"))
+
+
+def get_env_values(key):
+    return os.getenv(f"{key}")
 
 
 def create_image_folder():
