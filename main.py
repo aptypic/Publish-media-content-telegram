@@ -9,9 +9,9 @@ import telegram
 
 
 def publish_telegram(file_name):
-    bot = telegram.Bot(token=get_env_values("TELEGRAM_BOT"))
+    bot = telegram.Bot(token=get_env_values("TELEGRAM_BOT_TOKEN"))
     time.sleep(int(get_env_values("LATENCY_SECONDS")))
-    bot.send_photo(chat_id=get_env_values("GROUP_ID"), photo=open(f"{file_name}", "rb"))
+    bot.send_photo(chat_id=get_env_values("TELEGRAM_GROUP_ID"), photo=open(f"{file_name}", "rb"))
 
 
 def get_env_values(key):
@@ -25,8 +25,8 @@ def create_image_folder():
 def fetch_spacex_last_launch():
     response = requests.get("https://api.spacexdata.com/v3/launches")
     response.raise_for_status()
-    images_launches = (response.json()[107].get("links").get("flickr_images"))
-    write_files(images_launches, "spacex")
+    links_of_launches = (response.json()[107].get("links").get("flickr_images"))
+    write_files(links_of_launches, "spacex")
 
 
 def write_files(links_of_images, image_name):
