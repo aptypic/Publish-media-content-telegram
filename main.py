@@ -68,7 +68,7 @@ def fetch_nasa_epic(nasa_api):
     response = requests.get(epic_link, params)
     images_list = []
     for epic_image in response.json():
-        image_date = datetime.datetime.fromisoformat(epic_image.get('date'))
+        image_date = datetime.datetime.fromisoformat(epic_image.get("date"))
         images_list.append(f"https://api.nasa.gov/EPIC/archive/natural/"
                            f"{image_date.year}/{image_date.month}/{image_date.day}/"
                            f"png/{epic_image.get('image')}.png?api_key={nasa_api}")
