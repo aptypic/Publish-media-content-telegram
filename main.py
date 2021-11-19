@@ -8,11 +8,12 @@ from urllib.parse import urlsplit
 import telegram
 
 
-def publish_telegram(file_name):
+def publish_telegram():
     bot = telegram.Bot(token=get_env_values("TELEGRAM_BOT_TOKEN"))
-    time.sleep(int(get_env_values("LATENCY_SECONDS")))
-    with open(f"{file_name}", "rb") as file:
-        bot.send_photo(chat_id=get_env_values("TELEGRAM_GROUP_ID"), photo=file)
+    for image in os.listdir("images/"):
+        time.sleep(int(get_env_values("LATENCY_SECONDS")))
+        with open(f"images/{image}", "rb") as file:
+            bot.send_photo(chat_id=get_env_values("TELEGRAM_GROUP_ID"), photo=file)
 
 
 def get_env_values(key):
@@ -43,7 +44,6 @@ def write_files(links_of_images, image_name):
     for image_number, image_value in enumerate(links_of_images):
         with open(f"images/{image_name}{image_number}{get_file_ext(image_value)}", "wb") as file:
             file.write(requests.get(image_value).content)
-            publish_telegram(f"images/{image_name}{image_number}{get_file_ext(image_value)}")
 
 
 def fetch_nasa_apod(nasa_api):
@@ -88,6 +88,7 @@ def main():
         fetch_nasa_apod(nasa_api)
         fetch_spacex_last_launch()
         fetch_nasa_epic(nasa_api)
+        publish_telegram()
 
 
 if __name__ == "__main__":
