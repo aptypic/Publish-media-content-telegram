@@ -11,7 +11,8 @@ import telegram
 def publish_telegram(file_name):
     bot = telegram.Bot(token=get_env_values("TELEGRAM_BOT_TOKEN"))
     time.sleep(int(get_env_values("LATENCY_SECONDS")))
-    bot.send_photo(chat_id=get_env_values("TELEGRAM_GROUP_ID"), photo=open(f"{file_name}", "rb"))
+    with open(f"{file_name}", "rb") as file:
+        bot.send_photo(chat_id=get_env_values("TELEGRAM_GROUP_ID"), photo=file)
 
 
 def get_env_values(key):
