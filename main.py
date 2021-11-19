@@ -50,7 +50,7 @@ def fetch_nasa_apod(nasa_api):
     apod_link = "https://api.nasa.gov/planetary/apod"
     params = {
         "count": 3,
-        "api_key": f"{nasa_api}",
+        "api_key": nasa_api,
     }
     nasa_images = []
     response = requests.get(apod_link, params)
