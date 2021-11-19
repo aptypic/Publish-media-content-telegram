@@ -26,8 +26,17 @@ def create_image_folder():
 def fetch_spacex_last_launch():
     response = requests.get("https://api.spacexdata.com/v3/launches")
     response.raise_for_status()
-    links_of_launches = (response.json()[107].get("links").get("flickr_images"))
-    write_files(links_of_launches, "spacex")
+    write_files(define_latest_launch(), "spacex")
+
+
+def define_latest_launch():
+    response = requests.get("https://api.spacexdata.com/v3/launches")
+    response.raise_for_status()
+    for launch in reversed(response.json()):
+        if not launch.get("links").get("flickr_images"):
+            pass
+        else:
+            return launch.get("links").get("flickr_images")
 
 
 def write_files(links_of_images, image_name):
