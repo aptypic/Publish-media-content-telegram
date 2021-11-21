@@ -10,9 +10,9 @@ import telegram
 def publish_telegram(token, latency_seconds, telegram_group_id):
     bot = telegram.Bot(token=token)
     for image in os.listdir("images/"):
-        time.sleep(int(latency_seconds))
         with open(f"images/{image}", "rb") as file:
             bot.send_photo(chat_id=telegram_group_id, photo=file)
+        time.sleep(int(latency_seconds))
 
 
 def fetch_spacex_last_launch():
@@ -52,7 +52,7 @@ def fetch_nasa_apod(nasa_api):
 def fetch_nasa_epic(nasa_api):
     epic_link = f"https://api.nasa.gov/EPIC/api/natural"
     params = {
-        "api_key": f"{nasa_api}",
+        "api_key": nasa_api,
     }
     response = requests.get(epic_link, params)
     response.raise_for_status()
