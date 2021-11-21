@@ -2,7 +2,6 @@ import os
 import time
 import requests
 import datetime
-from pathlib import Path
 from dotenv import load_dotenv
 from urllib.parse import urlsplit
 import telegram
@@ -26,9 +25,7 @@ def define_latest_launch():
     response = requests.get("https://api.spacexdata.com/v3/launches")
     response.raise_for_status()
     for launch in reversed(response.json()):
-        if not launch.get("links").get("flickr_images"):
-            pass
-        else:
+        if launch.get("links").get("flickr_images"):
             return launch.get("links").get("flickr_images")
 
 
