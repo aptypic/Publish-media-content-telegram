@@ -16,14 +16,6 @@ def publish_telegram(token, latency_seconds, telegram_group_id):
             bot.send_photo(chat_id=telegram_group_id, photo=file)
 
 
-def get_env_values(key):
-    return os.getenv(f"{key}")
-
-
-def create_image_folder():
-    Path("./images/").mkdir(parents=True, exist_ok=True)
-
-
 def fetch_spacex_last_launch():
     response = requests.get("https://api.spacexdata.com/v3/launches")
     response.raise_for_status()
@@ -84,7 +76,6 @@ def get_file_ext(ext_link):
 def main():
     while True:
         load_dotenv()
-        create_image_folder()
         nasa_api = os.getenv("NASA_API")
         telegram_bot_token = os.getenv("TELEGRAM_BOT_TOKEN")
         latency_seconds = os.getenv("LATENCY_SECONDS")
