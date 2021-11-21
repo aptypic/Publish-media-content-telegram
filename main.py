@@ -2,6 +2,7 @@ import os
 import time
 import requests
 import datetime
+from pathlib import Path
 from dotenv import load_dotenv
 from urllib.parse import urlsplit
 import telegram
@@ -71,6 +72,7 @@ def get_file_ext(ext_link):
 
 
 def main():
+    Path("./image/").mkdir(parents=True, exist_ok=True)
     while True:
         load_dotenv()
         nasa_api = os.getenv("NASA_API")
