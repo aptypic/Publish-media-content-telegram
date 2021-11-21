@@ -16,7 +16,12 @@ python3 -m pip install --upgrade pip
 pip install -r requirements.txt
 ```
 ## How to start
-just launch main.py
+just launch main.py and programme will save images on local folder /images/ and publish in telegram channel.  
+Additionally should to know about env variables:
+* **NASA_API** - token which can be created on [NASA official website](https://api.nasa.gov/). It is necessary for accessing images.
+* **TELEGRAM_BOT_TOKEN** - accessing of bot
+* **TELEGRAM_GROUP_ID** - accessing of group channel
+* **LATENCY_SECONDS** - time delay
 ```
 Publish-media-content-telegram % python3 main.py 
 Publish-media-content-telegram % ls -la images 
