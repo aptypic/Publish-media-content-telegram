@@ -19,21 +19,21 @@ def publish_telegram(token, latency_seconds, telegram_group_id):
 def fetch_spacex_last_launch():
     response = requests.get("https://api.spacexdata.com/v3/launches")
     response.raise_for_status()
-    download_images(define_latest_launch(), "spacex")
+    download_images(define_latest_launch(response), "spacex")
 
 
-def define_latest_launch():
-    response = requests.get("https://api.spacexdata.com/v3/launches")
-    response.raise_for_status()
+def define_latest_launch(response):
     for launch in reversed(response.json()):
         if launch.get("links").get("flickr_images"):
             return launch.get("links").get("flickr_images")
 
 
-def download_images(links_of_images, image_name):
+def download_images(links_of_images, image_name, params={}):
     for image_number, image_value in enumerate(links_of_images):
         with open(f"images/{image_name}{image_number}{get_file_ext(image_value)}", "wb") as file:
-            file.write(requests.get(image_value).content)
+            response = requests.get(image_value, params)
+            response.raise_for_status()
+            file.write(response.content)
 
 
 def fetch_nasa_apod(nasa_api):
@@ -47,7 +47,7 @@ def fetch_nasa_apod(nasa_api):
     response.raise_for_status()
     for apod_image in response.json():
         nasa_images.append(apod_image.get("hdurl"))
-    download_images(nasa_images, "nasa")
+    download_images(nasa_images, "nasa", params)
 
 
 def fetch_nasa_epic(nasa_api):
@@ -63,10 +63,8 @@ def fetch_nasa_epic(nasa_api):
         epic_image = f"{epic_image.get('image')}.png"
         year, month, day = image_date.year, image_date.month, image_date.day
         url = f"https://api.nasa.gov/EPIC/archive/natural/{year}/{month}/{day}/png/{epic_image}"
-        response = requests.get(url, params=params)
-        response.raise_for_status()
-        links_catalog.append(requests.get(url, params=params).url)
-    download_images(links_catalog, "nasa_epic")
+        links_catalog.append(url)
+    download_images(links_catalog, "nasa_epic", params)
 
 
 def get_file_ext(ext_link):
