@@ -57,7 +57,7 @@ def fetch_nasa_epic(nasa_api):
     }
     response = requests.get(epic_link, params)
     response.raise_for_status()
-    images_catalog = []
+    links_catalog = []
     for epic_image in response.json():
         image_date = datetime.datetime.fromisoformat(epic_image.get("date"))
         epic_image = f"{epic_image.get('image')}.png"
@@ -65,8 +65,8 @@ def fetch_nasa_epic(nasa_api):
         url = f"https://api.nasa.gov/EPIC/archive/natural/{year}/{month}/{day}/png/{epic_image}"
         response = requests.get(url, params=params)
         response.raise_for_status()
-        images_catalog.append(requests.get(url, params=params).url)
-    download_images(images_catalog, "nasa_epic")
+        links_catalog.append(requests.get(url, params=params).url)
+    download_images(links_catalog, "nasa_epic")
 
 
 def get_file_ext(ext_link):
