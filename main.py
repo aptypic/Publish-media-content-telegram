@@ -19,7 +19,7 @@ def publish_telegram(token, latency_seconds, telegram_group_id):
 def fetch_spacex_last_launch():
     response = requests.get("https://api.spacexdata.com/v3/launches")
     response.raise_for_status()
-    write_files(define_latest_launch(), "spacex")
+    download_images(define_latest_launch(), "spacex")
 
 
 def define_latest_launch():
@@ -30,7 +30,7 @@ def define_latest_launch():
             return launch.get("links").get("flickr_images")
 
 
-def write_files(links_of_images, image_name):
+def download_images(links_of_images, image_name):
     for image_number, image_value in enumerate(links_of_images):
         with open(f"images/{image_name}{image_number}{get_file_ext(image_value)}", "wb") as file:
             file.write(requests.get(image_value).content)
@@ -47,7 +47,7 @@ def fetch_nasa_apod(nasa_api):
     response.raise_for_status()
     for apod_image in response.json():
         nasa_images.append(apod_image.get("hdurl"))
-    write_files(nasa_images, "nasa")
+    download_images(nasa_images, "nasa")
 
 
 def fetch_nasa_epic(nasa_api):
@@ -57,13 +57,16 @@ def fetch_nasa_epic(nasa_api):
     }
     response = requests.get(epic_link, params)
     response.raise_for_status()
-    images_list = []
+    images_catalog = []
     for epic_image in response.json():
         image_date = datetime.datetime.fromisoformat(epic_image.get("date"))
-        images_list.append(requests.get(f"https://api.nasa.gov/EPIC/archive/natural/"
-                                        f"{image_date.year}/{image_date.month}/{image_date.day}/"
-                                        f"png/{epic_image.get('image')}.png", params=params).url)
-    write_files(images_list, "nasa_epic")
+        epic_image = f"{epic_image.get('image')}.png"
+        year, month, day = image_date.year, image_date.month, image_date.day
+        url = f"https://api.nasa.gov/EPIC/archive/natural/{year}/{month}/{day}/png/{epic_image}"
+        response = requests.get(url, params=params)
+        response.raise_for_status()
+        images_catalog.append(requests.get(url, params=params).url)
+    download_images(images_catalog, "nasa_epic")
 
 
 def get_file_ext(ext_link):
@@ -72,7 +75,7 @@ def get_file_ext(ext_link):
 
 
 def main():
-    Path("./image/").mkdir(parents=True, exist_ok=True)
+    Path("./images/").mkdir(parents=True, exist_ok=True)
     while True:
         load_dotenv()
         nasa_api = os.getenv("NASA_API")
